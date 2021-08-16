@@ -21,7 +21,12 @@ class Overview extends Component {
 
   onClickAddPolicy = () => {
     const {history} = this.props
-    history.replace('/addPolicy')
+    history.push('/addPolicy')
+  }
+
+  onClickLogout = () => {
+    const {history} = this.props
+    history.replace('/login')
   }
 
   render() {
@@ -30,13 +35,16 @@ class Overview extends Component {
     const leaveDays = Cookies.get('leaveDays')
     const isCreatedNewPolicy = Cookies.get('isCreated')
     const remainingLeaves = leaveDays - 18
-
+    const date = `${new Date()}`
+    const updatedDate = date.slice(3, 16)
     return (
       <div className="overview-container">
         <nav className="nav-container">
           <div className="nav-bar">
             <div className="first-block">
-              <h1>PROJECT</h1>
+              <h1>
+                <span className="span-letter">P</span>ROJECT
+              </h1>
               <GoThreeBars className="icons" />
             </div>
             <div>
@@ -45,7 +53,16 @@ class Overview extends Component {
               <AiOutlineBell className="icons" />
             </div>
           </div>
-          <h1>Overview</h1>
+          <div className="nav-bar">
+            <h1>Overview</h1>
+            <button
+              onClick={this.onClickLogout}
+              className="logout-button"
+              type="button"
+            >
+              Logout
+            </button>
+          </div>
         </nav>
         <div className="policy-info-block">
           <div className="main-heading">
@@ -69,7 +86,7 @@ class Overview extends Component {
             <p className="leaves">
               8<span className="remaining-leaves">(Remaining Leaves- 10)</span>
             </p>
-            <p className="date">10 June 2020</p>
+            <p className="date">June 10 2020</p>
 
             {showActions ? (
               <select className="select-block">
@@ -85,7 +102,7 @@ class Overview extends Component {
             <p className="leaves">
               12<span className="remaining-leaves">(Remaining Leaves - 6)</span>
             </p>
-            <p>09 Jul 2020</p>
+            <p>Jul 09 2020</p>
             {showActions ? (
               <select className="select-block">
                 <option>Edit</option>
@@ -100,7 +117,7 @@ class Overview extends Component {
             <p className="leaves">
               4<span className="remaining-leaves">(Remaining Leaves - 14)</span>
             </p>
-            <p>12 Aug 2020</p>
+            <p>Aug 12 2020</p>
             {showActions ? (
               <select className="select-block">
                 <option>Edit</option>
@@ -115,7 +132,7 @@ class Overview extends Component {
             <p className="leaves">
               2<span className="remaining-leaves">(Remaining Leaves - 0)</span>
             </p>
-            <p>09 Nov 2020</p>
+            <p>Nov 09 2020</p>
             {showActions ? (
               <select className="select-block">
                 <option>Edit</option>
@@ -130,7 +147,7 @@ class Overview extends Component {
             <p className="leaves">
               1<span className="remaining-leaves">(Remaining leaves - 0)</span>
             </p>
-            <p>09 Nov 2020</p>
+            <p>Nov 09 2020</p>
             {showActions ? (
               <select className="select-block">
                 <option>Edit</option>
@@ -147,7 +164,7 @@ class Overview extends Component {
                 <p className="leaves">
                   N/A
                   <span className="remaining-leaves">
-                    (*LeaveDays must be >= 18 )
+                    (*LeaveDays must be less than 18 )
                   </span>
                 </p>
               ) : (
@@ -158,7 +175,7 @@ class Overview extends Component {
                   </span>
                 </p>
               )}
-              <p>16 Sep 2021</p>
+              <p>{updatedDate}</p>
               {showActions ? (
                 <select className="select-block">
                   <option>Edit</option>

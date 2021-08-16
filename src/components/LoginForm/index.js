@@ -8,6 +8,8 @@ class LoginForm extends Component {
   state = {
     loginEmailId: '',
     loginPassword: '',
+    loginEmailIdError: false,
+    loginPasswordError: false,
   }
 
   onChangeCompanyEmailId = event => {
@@ -27,9 +29,19 @@ class LoginForm extends Component {
       const {history} = this.props
       history.replace('/overview')
     }
+    if (loginEmailId !== registerMailId) {
+      this.setState({loginEmailIdError: true})
+    } else {
+      this.setState({loginEmailIdError: false})
+    }
+    if (loginPassword !== mailIdPassword) {
+      this.setState({loginPasswordError: true})
+    }
   }
 
   render() {
+    const {loginEmailIdError, loginPasswordError} = this.state
+
     return (
       <div className="login-page">
         <h1 className="project-heading">
@@ -45,6 +57,9 @@ class LoginForm extends Component {
             className="input-element"
             id="emailId"
           />
+          {loginEmailIdError && (
+            <li className="error-msg">*EmailId doesn't exits</li>
+          )}
           <label className="label-element" htmlFor="password">
             Password<span className="span-label">*</span>
           </label>
@@ -54,6 +69,9 @@ class LoginForm extends Component {
             id="password"
             type="password"
           />
+          {loginPasswordError && (
+            <li className="error-msg">*Password Incorrect</li>
+          )}
           <button className="login-submit" type="submit">
             Submit
           </button>

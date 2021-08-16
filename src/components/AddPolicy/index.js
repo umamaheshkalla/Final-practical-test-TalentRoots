@@ -11,6 +11,8 @@ class AddPolicy extends Component {
     description: '',
     submitResponse: false,
     isCreatedNewPolicy: true,
+    isPolicyNameError: false,
+    isLeaveDaysError: false,
   }
 
   onClickNewPolicy = () => {
@@ -34,11 +36,29 @@ class AddPolicy extends Component {
   }
 
   onClickSubmit = () => {
-    this.setState({submitResponse: true})
     const {policyName, leaveDays, isCreatedNewPolicy} = this.state
-    Cookies.set('policyName', policyName, {expires: 10})
-    Cookies.set('leaveDays', leaveDays, {expires: 10})
-    Cookies.set('isCreated', isCreatedNewPolicy, {expires: 10})
+    if (policyName === '') {
+      this.setState({isPolicyNameError: true})
+    } else {
+      this.setState({isPolicyNameError: false})
+    }
+    if (leaveDays === 0) {
+      this.setState({isLeaveDaysError: true})
+    } else {
+      this.setState({isLeaveDaysError: false})
+    }
+    if (leaveDays === '') {
+      this.setState({isLeaveDaysError: true})
+    } else {
+      this.setState({isLeaveDaysError: false})
+    }
+
+    if (policyName !== '' && leaveDays !== '' && leaveDays !== 0) {
+      this.setState({submitResponse: true})
+      Cookies.set('policyName', policyName, {expires: 10})
+      Cookies.set('leaveDays', leaveDays, {expires: 10})
+      Cookies.set('isCreated', isCreatedNewPolicy, {expires: 10})
+    }
   }
 
   onClickClose = () => {
@@ -47,7 +67,14 @@ class AddPolicy extends Component {
   }
 
   render() {
-    const {policyName, leaveDays, description, submitResponse} = this.state
+    const {
+      policyName,
+      leaveDays,
+      description,
+      isPolicyNameError,
+      isLeaveDaysError,
+      submitResponse,
+    } = this.state
     return (
       <div>
         <nav className="add-policy-nav">
@@ -63,6 +90,9 @@ class AddPolicy extends Component {
             placeholder="Name of Policy"
             id="policyName"
           />
+          {isPolicyNameError && (
+            <li className="error-msg">*Name should not be Empty</li>
+          )}
           <label htmlFor="leaveDays">Leave Days</label>
           <input
             onChange={this.onChangeLeaveDays}
@@ -72,6 +102,9 @@ class AddPolicy extends Component {
             placeholder="Number of Days"
             id="leaveDays"
           />
+          {isLeaveDaysError && (
+            <li className="error-msg">*Leave Days Should not be Empty or 0</li>
+          )}
           <label htmlFor="description">Description</label>
           <input
             onChange={this.onChangeDescription}
